@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(133, 231, 192);
+            color: #fff;
+        }
+        .profile-pic {
+            width: 50px;
+            height: auto;
+        }
+        .card{
+            background-color: bisque;
+            color:black;
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(197, 240, 238, 0.2);
+        }
+        .footer {
+            background-color: #f6f9a9;
+            padding: 10px;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            
+        }
+        .btn-primary, .btn-secondary {
+            margin-top: 10px;
+        }
+        .modal-body {
+            padding: 20px;
+            color: black;
+        }
+        .modal-content {
+            background-color: #ade4f3;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(221, 187, 231, 0.1);
+        }
+        .carousel-item img {
+            height: 100vh;
+          
+        }
+        .special-offers {
+            color:black;
+            padding: 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="color:darkmagenta">SmartBookShop</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" href="#" style="color:darkmagenta">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="color:darkmagenta">Books</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="color:darkmagenta">Categories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" style="color:darkmagenta">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" id="contactLink" style="color:darkmagenta">Contact</a></li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="modal fade" id="outOfStockModal" tabindex="-1" aria-labelledby="outOfStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="outOfStockModalLabel">Out of Stock</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This item is currently out of stock.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contactModalLabel" style="color: #000;">Contact</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="contactName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="contactName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="contactEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactMessage" class="form-label">Message</label>
+                                <textarea class="form-control" id="contactMessage" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById("contactLink").addEventListener("click", function(event) {
+                event.preventDefault();
+                var contactModal = new bootstrap.Modal(document.getElementById("contactModal"));
+                contactModal.show();
+            });
+        </script>
+        <hr>
+        <div class="container filter-sort">
+            <div class="row">
+                <div class="col-md-6">
+                    <select id="categoryFilter" class="form-select" aria-label="Filter by category">
+                        <option value="" selected>All Categories</option>
+                        <option value="educational">Educational</option>
+                        <option value="poetry">Poetry</option>
+                        <option value="fiction">Fiction</option>
+                        <option value="non-fiction">Non-Fiction</option>
+                    </select>
+                </div>
+                <div class="col-md-6 d-flex justify-content-end">
+                    <button id="wishlistButton" class="btn btn-outline-danger me-2" onclick="viewWishlist()" style="color:rgb(21, 22, 21)">View Wishlist</button>
+                    <button id="cart" class="btn btn-outline-danger" onclick="toggleWishlist()" style="color:rgb(21, 22, 21)">View Cart</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr>
+    
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://cdn.kobo.com/book-images/3c2a6883-6d52-4ba6-9f83-9149a7fa2893/1200/1200/False/the-complete-works-of-william-shakespeare-87.jpg" class="d-block w-100" alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <img src="https://m.media-amazon.com/images/I/718CaOXiL6L._AC_UF1000,1000_QL80_.jpg" class="d-block w-100" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img src="https://cdn.kobo.com/book-images/9493a870-bd6a-41ba-ae3f-794a4bfc77d1/1200/1200/False/walt-disney-s-the-jungle-book-1.jpg" class="d-block w-100" alt="Third slide">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="https://m.media-amazon.com/images/I/717A0S72rsL._AC_UF1000,1000_QL80_.jpg" class="card-img-top" alt="Book Image">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title"><b>Christmas in Egypt</b></h5>
+                            <p class="card-text">Author: Kathie Hill</p>
+                            <p class="card-text">Price: ₹456</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                            <span class="wishlist-heart" onclick="toggleWishlist(this)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="https://m.media-amazon.com/images/I/51O7y0WI-4L.jpg" class="card-img-top" alt="Book Image">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title"><b>1001 nights</b></h5>
+                            <p class="card-text">Author: Anonymous</p>
+                            <p class="card-text">Price: ₹299</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                            <span class="wishlist-heart" onclick="toggleWishlist(this)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTHal56Ctx0SX67CFq-30iPRGTIS-D2-vUdw&s" class="card-img-top" alt="Book Image">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title"><b>The Diary of Anne Frank</b></h5>
+                            <p class="card-text">Author: Anne Frank</p>
+                            <p class="card-text">Price: ₹171</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
+                            <span class="wishlist-heart" onclick="toggleWishlist(this)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container special-offers" style="background-color:rgb(248, 187, 192);">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Special Offers</h2>
+                <p>Get up to 50% off on selected books!</p>
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="https://cdn.kobo.com/book-images/81b9dcba-dc33-4bb1-b5d3-c3a75b07d1c4/1200/1200/False/the-complete-works-of-william-shakespeare-all-214-plays-sonnets-poems-apocryphal-plays-including-the-biography-of-the-author.jpg" alt="Offer Image" class="img-fluid" style="width: 100px;">
+                    <!-- Adjust the width as needed -->
+                    <p><b>&nbsp; Description:</b>&nbsp; The Complete Works of William Shakespeare collects all 37 of the immortal Bard's comedies, tragedies, and historical plays in a collectible edition. This volume also features Shakespeare's complete poetry, including the sonnet</p>
+                </div>
+                <div class="container d-flex justify-content-center feedback-section">
+                    <h5><b>Was this information helpful?</b></h5>
+                    <form>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="feedback" id="helpful" value="helpful">
+                            <label class="form-check-label" for="helpful"><b><i class="bi bi-hand-thumbs-up"></i> Helpful</b></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="feedback" id="unhelpful" value="unhelpful">
+                            <label class="form-check-label" for="unhelpful"><b><i class="bi bi-hand-thumbs-up"></i> Unhelpful</b></label>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container" style="color:black">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>We are a passionate bookstore offering a wide range of books to cater to all your reading needs. Visit us for an unparalleled book shopping experience.</p>
+                    <p>&copy; 2024 BookStore. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Contact Us</a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h5>Follow Us</h5>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" class="profile-pic"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558
+
+.png" alt="Twitter" class="profile-pic"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Instagram" class="profile-pic"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleWishlist(heart) {
+            heart.classList.toggle('active');
+        }
+
+        function addToCart() {
+            alert('Item added to cart!');
+        }
+    </script>
+</body>
+</html>
